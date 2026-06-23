@@ -2,11 +2,23 @@ spring:
   application:
     name: contract-management
   datasource:
-    url: jdbc:mysql://localhost:3306/contract-management?useSSL=false&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/contract-management?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
     username: osci
     password: osci1!#
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
+    hibernate:
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+
+openapi:
+  service:
+    url: /swagger-ui.html
+
+# JWT 설정
+jwt:
+  secret: SHrj0iqVOTY8N9mXb9NZCcCJVfO+3rO4omcjUWub6vk=
+  access-expiration: 3600 # 1h
+  refresh-expiration: 1209600 # 2w
