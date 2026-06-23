@@ -28,7 +28,10 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/user").permitAll()
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/v1/users",
+                                "/api/v1/users/admin",
+                                "/api/v1/users/login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(

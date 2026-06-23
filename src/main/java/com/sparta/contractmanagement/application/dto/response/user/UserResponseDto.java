@@ -1,4 +1,4 @@
-package com.sparta.contractmanagement.application.dto.response;
+package com.sparta.contractmanagement.application.dto.response.user;
 
 import com.sparta.contractmanagement.domain.model.User;
 import com.sparta.contractmanagement.domain.model.UserRole;

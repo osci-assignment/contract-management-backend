@@ -1,6 +1,8 @@
 package com.sparta.contractmanagement.infrastructure.auth;
 
 import com.sparta.contractmanagement.application.provider.TokenProvider;
+import com.sparta.contractmanagement.application.provider.TokenType;
+import com.sparta.contractmanagement.domain.model.UserRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -24,7 +26,10 @@ public class JwtTokenProvider implements TokenProvider {
     private String secretKey;
 
     @Value("${jwt.access-expiration}")
-    private long expiration;
+    private long accessExp;
+
+    @Value("${jwt.refresh-expiration}")
+    private long refreshExp;
 
     private SecretKey key;
 
@@ -35,18 +40,23 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
 
-    public String createToken(Long userId , String role) {
+    public String createToken(Long userId , UserRole role, TokenType type) {
         Date now = new Date();
-        Date expiry = new Date(now.getTime() + expiration);
+
+        Date expiry = getTokenExpiration(type);
 
         return Jwts.builder()
                 .subject(userId.toString())
                 .issuer("osci-auth")
-                .claim("role", role)
+                .claim("role", role.toString())
                 .issuedAt(now)
                 .expiration(expiry)
                 .signWith(key)
                 .compact();
+    }
+
+    private Date getTokenExpiration(TokenType type) {
+        return new Date(new Date().getTime() + (type == TokenType.ACCESS ? accessExp : refreshExp));
     }
 
     public boolean isValidToken(String token) {

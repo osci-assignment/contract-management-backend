@@ -42,18 +42,33 @@ public class User {
     @Column(name = "approved_at")
     private LocalDateTime approvedAt;
 
+    private static final UserStatus DEFAULT_USER_STATUS = UserStatus.PENDING;
+
     public static User create(String email, String password) {
         return User.builder()
                 .email(email)
                 .password(password)
                 .role(UserRole.WORKER)
-                .status(UserStatus.PENDING)
+                .status(DEFAULT_USER_STATUS)
                 .createdAt(LocalDateTime.now())
                 .build();
     }
 
+    public static User createAdmin(String email, String password) {
+        final User user = User.builder()
+                .email(email)
+                .password(password)
+                .role(UserRole.ADMIN)
+                .status(DEFAULT_USER_STATUS)
+                .createdAt(LocalDateTime.now())
+                .build();
+        user.approve();
+        return user;
+    }
+
     public void approve() {
         this.status = UserStatus.APPROVED;
+        this.approvedAt = LocalDateTime.now();
     }
 
     public void reject() {
