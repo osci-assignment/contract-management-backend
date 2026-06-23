@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: contract-management
+  datasource:
+    url: jdbc:mysql://localhost:3306/contract-management?useSSL=false&serverTimezone=Asia/Seoul
+    username: osci
+    password: osci1!#
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
