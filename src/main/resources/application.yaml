@@ -9,13 +9,50 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        # 기본 1MB -> 10MB로 완화 (계약서 PDF/이미지가 Base64로 커지는 점 고려)
+        max.request.size: 10485760
+
+    consumer:
+      group-id: contract-ocr-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "com.osci.contractmanagement.infrastructure.contract.dto"
+        spring.json.value.default.type: com.osci.contractmanagement.infrastructure.contract.dto.ContractOcrMessage
+        # consumer가 한 번에 가져올 수 있는 최대 메시지 크기도 함께 완화
+        max.partition.fetch.bytes: 10485760
+
 
 openapi:
   service:
     url: /swagger-ui.html
+
+llm:
+  ollama:
+    url: http://localhost:11434
+    model: exaone3.5:2.4b
+
+ocr:
+  server:
+    url: http://localhost:8884
+
+# 업로드된 계약서 파일 저장 위치 (로컬 테스트용)
+file:
+  storage:
+    local-path: ./uploads
 
 # JWT 설정
 jwt:

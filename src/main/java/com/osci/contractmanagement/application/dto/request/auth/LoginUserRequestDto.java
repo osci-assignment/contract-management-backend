@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class LoginUserDto {
+public class LoginUserRequestDto {
     @Email(message = "이메일 형식이 아닙니다.")
     @NotBlank(message = "이메일을 입력해주세요.")
     @Size(max = 80, message = "이메일의 최대 길이는 80자 입니다")

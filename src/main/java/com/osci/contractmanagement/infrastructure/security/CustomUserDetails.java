@@ -1,7 +1,7 @@
 package com.osci.contractmanagement.infrastructure.security;
 
-import com.osci.contractmanagement.domain.model.User;
-import com.osci.contractmanagement.domain.model.UserRole;
+import com.osci.contractmanagement.domain.model.user.User;
+import com.osci.contractmanagement.domain.model.user.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

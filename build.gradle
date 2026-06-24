@@ -32,6 +32,14 @@ dependencies {
     // validator
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+    // contract-extract
+    implementation 'org.apache.pdfbox:pdfbox:3.0.3'
+
+    // kafka
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.retry:spring-retry'
+
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'

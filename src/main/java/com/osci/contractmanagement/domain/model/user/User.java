@@ -1,4 +1,4 @@
-package com.osci.contractmanagement.domain.model;
+package com.osci.contractmanagement.domain.model.user;
 
 
 import jakarta.persistence.*;

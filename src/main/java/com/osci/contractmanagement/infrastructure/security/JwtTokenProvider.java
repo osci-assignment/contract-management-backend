@@ -2,7 +2,7 @@ package com.osci.contractmanagement.infrastructure.security;
 
 import com.osci.contractmanagement.application.provider.TokenProvider;
 import com.osci.contractmanagement.application.provider.TokenType;
-import com.osci.contractmanagement.domain.model.UserRole;
+import com.osci.contractmanagement.domain.model.user.UserRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

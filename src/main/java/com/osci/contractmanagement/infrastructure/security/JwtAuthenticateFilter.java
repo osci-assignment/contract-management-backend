@@ -1,7 +1,7 @@
 package com.osci.contractmanagement.infrastructure.security;
 
 import com.osci.contractmanagement.application.provider.TokenProvider;
-import com.osci.contractmanagement.domain.model.UserRole;
+import com.osci.contractmanagement.domain.model.user.UserRole;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 
 @Component
 public class JwtAuthenticateFilter extends OncePerRequestFilter {

@@ -1,8 +1,8 @@
 package com.osci.contractmanagement.domain.repository;
 
 
-import com.osci.contractmanagement.domain.model.User;
-import com.osci.contractmanagement.domain.model.UserStatus;
+import com.osci.contractmanagement.domain.model.user.User;
+import com.osci.contractmanagement.domain.model.user.UserStatus;
 
 import java.util.Optional;
 
