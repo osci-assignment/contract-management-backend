@@ -50,6 +50,15 @@ public class UserController {
         return CommonResponse.ok(response);
     }
 
+    @PostMapping("/{userId}/reject")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CommonResponse<UserResponseDto>> reject(
+            @AuthenticationPrincipal(expression = "userId") Long loginUserId,
+            @PathVariable(value = "userId") Long targetId) {
+        UserResponseDto response = userFacade.rejectUser(loginUserId, targetId);
+        return CommonResponse.ok(response);
+    }
+
     @DeleteMapping
     public ResponseEntity<CommonResponse<Boolean>> deleteUser(@AuthenticationPrincipal(expression = "userId") Long userId) {
         userFacade.deleteUser(userId);
