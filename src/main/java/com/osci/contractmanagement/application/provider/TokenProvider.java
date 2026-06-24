@@ -1,6 +1,6 @@
 package com.osci.contractmanagement.application.provider;
 
-import com.osci.contractmanagement.domain.model.UserRole;
+import com.osci.contractmanagement.domain.model.user.UserRole;
 import io.jsonwebtoken.Claims;
 
 public interface TokenProvider {

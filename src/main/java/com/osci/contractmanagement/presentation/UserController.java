@@ -6,7 +6,6 @@ import com.osci.contractmanagement.application.dto.request.user.CreateUserReques
 import com.osci.contractmanagement.application.dto.response.auth.TokenResponseDto;
 import com.osci.contractmanagement.application.dto.response.user.UserResponseDto;
 import com.osci.contractmanagement.application.service.user.UserFacade;
-import com.osci.contractmanagement.domain.model.UserRole;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

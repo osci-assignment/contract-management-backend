@@ -1,8 +1,8 @@
 package com.osci.contractmanagement.application.dto.response.user;
 
-import com.osci.contractmanagement.domain.model.User;
-import com.osci.contractmanagement.domain.model.UserRole;
-import com.osci.contractmanagement.domain.model.UserStatus;
+import com.osci.contractmanagement.domain.model.user.User;
+import com.osci.contractmanagement.domain.model.user.UserRole;
+import com.osci.contractmanagement.domain.model.user.UserStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

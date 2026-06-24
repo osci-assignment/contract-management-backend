@@ -2,8 +2,8 @@ package com.osci.contractmanagement.infrastructure.security;
 
 import com.osci.contractmanagement.application.exceptions.BusinessException;
 import com.osci.contractmanagement.application.exceptions.BusinessExceptionType;
-import com.osci.contractmanagement.domain.model.User;
-import com.osci.contractmanagement.domain.model.UserStatus;
+import com.osci.contractmanagement.domain.model.user.User;
+import com.osci.contractmanagement.domain.model.user.UserStatus;
 import com.osci.contractmanagement.domain.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

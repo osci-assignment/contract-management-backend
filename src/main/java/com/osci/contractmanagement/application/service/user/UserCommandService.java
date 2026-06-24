@@ -5,8 +5,8 @@ import com.osci.contractmanagement.application.dto.request.user.CreateUserReques
 import com.osci.contractmanagement.application.dto.response.user.UserResponseDto;
 import com.osci.contractmanagement.application.exceptions.BusinessException;
 import com.osci.contractmanagement.application.exceptions.BusinessExceptionType;
-import com.osci.contractmanagement.domain.model.User;
-import com.osci.contractmanagement.domain.model.UserStatus;
+import com.osci.contractmanagement.domain.model.user.User;
+import com.osci.contractmanagement.domain.model.user.UserStatus;
 import com.osci.contractmanagement.domain.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

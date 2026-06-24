@@ -6,7 +6,7 @@ import com.osci.contractmanagement.application.exceptions.BusinessException;
 import com.osci.contractmanagement.application.exceptions.BusinessExceptionType;
 import com.osci.contractmanagement.application.provider.TokenProvider;
 import com.osci.contractmanagement.application.provider.TokenType;
-import com.osci.contractmanagement.domain.model.User;
+import com.osci.contractmanagement.domain.model.user.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
