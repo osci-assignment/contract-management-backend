@@ -70,7 +70,7 @@ public class ContractCommandService {
             throw new IllegalStateException("업체명을 추출하지 못했습니다. 수동 입력이 필요합니다.");
         }
 
-        return companyRepository.findByName(companyName)
+        return companyRepository.findByNameAndDeletedAtIsNull(companyName)
                 .orElseGet(() -> companyRepository.save(
                         Company.create(companyName, ContractType.ELECTRONIC)));
     }

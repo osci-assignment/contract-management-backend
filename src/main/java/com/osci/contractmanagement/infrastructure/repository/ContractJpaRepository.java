@@ -8,6 +8,5 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ContractJpaRepository extends ContractRepository, JpaRepository<Contract, Long> {
-    @EntityGraph(attributePaths = {"company", "project"})
     Page<Contract> findAllByDeletedAtIsNull(Pageable pageable);
 }

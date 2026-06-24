@@ -1,6 +1,6 @@
 package com.osci.contractmanagement.application.service.user;
 
-import com.osci.contractmanagement.application.dto.request.auth.LoginUserDto;
+import com.osci.contractmanagement.application.dto.request.auth.LoginUserRequestDto;
 import com.osci.contractmanagement.application.dto.response.auth.TokenResponseDto;
 import com.osci.contractmanagement.application.exceptions.BusinessException;
 import com.osci.contractmanagement.application.exceptions.BusinessExceptionType;
@@ -25,7 +25,7 @@ public class AuthService {
 
 
     @Transactional(readOnly = true)
-    public TokenResponseDto login(LoginUserDto request) {
+    public TokenResponseDto login(LoginUserRequestDto request) {
         final User user = userCommandService.getActiveUserFromEmail(request.getEmail());
 
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword())) {

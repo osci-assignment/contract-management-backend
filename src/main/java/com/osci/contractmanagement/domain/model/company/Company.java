@@ -12,7 +12,9 @@ import java.util.Optional;
 @Entity
 @Table(name = "company")
 @Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder(access = AccessLevel.PRIVATE)
 public class Company {
 
     @Id
@@ -39,11 +41,12 @@ public class Company {
     private List<Project> projects = new ArrayList<>();
 
     public static Company create(String name, ContractType contractType) {
-        Company company = new Company();
-        company.name = name;
-        company.contractType = contractType;
-        company.createdAt = LocalDateTime.now();
-        return company;
+        return Company.builder()
+                .name(name)
+                .contractType(contractType)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
     }
 
     public void update(String name, ContractType contractType) {
@@ -54,6 +57,7 @@ public class Company {
 
     public void delete() {
         this.deletedAt = LocalDateTime.now();
+        this.projects.forEach(Project::delete);
     }
 
     public boolean isDeleted() {

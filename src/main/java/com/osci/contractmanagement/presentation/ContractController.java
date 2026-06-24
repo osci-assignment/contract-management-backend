@@ -4,7 +4,6 @@ package com.osci.contractmanagement.presentation;
 import com.osci.contractmanagement.application.dto.response.contract.ContractResponseDto;
 import com.osci.contractmanagement.application.dto.response.contract.ContractUploadResponseDto;
 import com.osci.contractmanagement.application.service.contract.ContractUseCase;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -17,10 +16,13 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1/contracts")
-@RequiredArgsConstructor
 public class ContractController {
 
     private final ContractUseCase contractUseCase;
+
+    public ContractController(ContractUseCase contractUseCase) {
+        this.contractUseCase = contractUseCase;
+    }
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")

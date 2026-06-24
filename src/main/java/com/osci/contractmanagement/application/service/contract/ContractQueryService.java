@@ -2,7 +2,6 @@ package com.osci.contractmanagement.application.service.contract;
 
 
 import com.osci.contractmanagement.application.dto.response.contract.ContractResponseDto;
-import com.osci.contractmanagement.application.provider.ContractInfoExtractor.ContractExtractionResult;
 import com.osci.contractmanagement.domain.model.company.Company;
 import com.osci.contractmanagement.domain.model.company.Project;
 import com.osci.contractmanagement.domain.model.contract.Contract;
@@ -36,7 +35,7 @@ public class ContractQueryService {
     public Page<ContractResponseDto> getContracts(Pageable pageable) {
         Page<Contract> contracts = contractRepository.findAllByDeletedAtIsNull(pageable);
 
-        // companyId별로 한 번씩만 조회 (N+1 방지) - 같은 페이지 안에 같은 업체의 계약서가 여러 건일 수 있음
+        // companyId별로 한 번씩만 조회 - 같은 페이지 안에 같은 업체의 계약서가 여러 건일 수 있음
         Map<Long, Company> companiesById = findDistinctCompanies(contracts.getContent());
 
         return contracts.map(contract -> toResponseDto(contract, companiesById));
@@ -50,7 +49,7 @@ public class ContractQueryService {
                 .toList();
 
         return companyIds.stream()
-                .map(companyRepository::findById)
+                .map(companyRepository::findByIdAndDeletedAtIsNull)
                 .flatMap(java.util.Optional::stream)
                 .collect(Collectors.toMap(Company::getId, Function.identity()));
     }

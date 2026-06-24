@@ -1,6 +1,6 @@
 package com.osci.contractmanagement.application.service.user;
 
-import com.osci.contractmanagement.application.dto.request.auth.LoginUserDto;
+import com.osci.contractmanagement.application.dto.request.auth.LoginUserRequestDto;
 import com.osci.contractmanagement.application.dto.request.user.CreateAdminUserRequestDto;
 import com.osci.contractmanagement.application.dto.request.user.CreateUserRequestDto;
 import com.osci.contractmanagement.application.dto.response.auth.TokenResponseDto;
@@ -28,7 +28,7 @@ public class UserFacade implements UserUseCase {
     }
 
     @Override
-    public TokenResponseDto login(LoginUserDto request) {
+    public TokenResponseDto login(LoginUserRequestDto request) {
         return authService.login(request);
     }
 

@@ -11,6 +11,7 @@ import lombok.*;
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
 public class ContractResponseDto {
+    Long contractId;
     ContractProjectResponseDto project;
     ContractCompanyResponseDto company;
     String fileUrl;
@@ -19,6 +20,7 @@ public class ContractResponseDto {
 
     public static ContractResponseDto of(Contract contract, Company company, Project project) {
         return ContractResponseDto.builder()
+                .contractId(contract.getId())
                 .project(project != null
                         ? new ContractProjectResponseDto(project.getId(), project.getTitle())
                         : null)
