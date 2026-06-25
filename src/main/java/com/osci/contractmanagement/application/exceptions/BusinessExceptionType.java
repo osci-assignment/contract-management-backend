@@ -14,6 +14,7 @@ public enum BusinessExceptionType {
     INTERNAL_SERVER_ERROR("OSCI9999", HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 오류가 발생했습니다."),
     USER_NOT_FOUND("OSCI1001", HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다."),
     PASSWORD_NOT_MATCH("OSCI1003", HttpStatus.BAD_REQUEST, "암호가 일치하지 않습니다."),
+    INVALID_TOKEN("OSCI1005", HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
     FORBIDDEN("OSCI1004", HttpStatus.FORBIDDEN, "실행할 수 있는 권한이 아닙니다."),
     DUPLICATE_EMAIL("OSCI1002", HttpStatus.CONFLICT, "이미 등록된 이메일입니다."),
 
@@ -32,6 +33,7 @@ public enum BusinessExceptionType {
     EXTRACT_CONTRACT_DOCUMENT_FAIL("OSCI4002", HttpStatus.CONFLICT, "계약서 문서 추출 실패"),
     EXTRACT_CONTRACT_INFO_FAIL("OSCI4003", HttpStatus.CONFLICT, "계약서 정보 추출 실패"),
     ;
+
     private final String code;
     private final HttpStatus status;
     private final String message;
