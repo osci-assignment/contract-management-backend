@@ -21,7 +21,7 @@ public class CompanyController {
     }
 
     @GetMapping
-    public ResponseEntity<CommonResponse<Page<CompanyResponseDto>>> getCompanies(@PageableDefault(size = 10) Pageable pageable) {
+    public ResponseEntity<CommonResponse<Page<CompanyResponseDto>>> getCompanies(@PageableDefault(size = 10, sort = "createdAt", direction = org.springframework.data.domain.Sort.Direction.DESC) Pageable pageable) {
         Page<CompanyResponseDto> response = companyUseCase.getCompanies(pageable);
         return CommonResponse.ok(response);
     }
@@ -38,7 +38,7 @@ public class CompanyController {
     public ResponseEntity<CommonResponse<CompanyDetailResponseDto>> updateCompany(
             @PathVariable Long companyId,
             @RequestBody @Valid UpdateCompanyRequestDto request
-            ) {
+    ) {
         CompanyDetailResponseDto response = companyUseCase.updateCompany(companyId, request);
         return CommonResponse.ok(response);
     }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+
 @Getter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,7 +40,7 @@ public class CommonResponse<T> {
     public static <T> ResponseEntity<CommonResponse<T>> ok(T data, String message) {
         return CommonResponse.<T>builder()
                 .success(true)
-                .message("OK")
+                .message(message)
                 .data(data)
                 .build().toResponseEntity(HttpStatus.OK);
     }
@@ -49,7 +50,7 @@ public class CommonResponse<T> {
                 .success(false)
                 .code(exception.getCode())
                 .message(exception.getMessage())
-                .build().toResponseEntity(HttpStatus.OK);
+                .build().toResponseEntity(exception.getStatus());
     }
     public static <T> ResponseEntity<CommonResponse<T>> error(List<FieldErrorResponse> errors, BusinessExceptionType exception) {
         return CommonResponse.<T>builder()
@@ -57,7 +58,7 @@ public class CommonResponse<T> {
                 .code(exception.getCode())
                 .message(exception.getMessage())
                 .errors(errors)
-                .build().toResponseEntity(HttpStatus.OK);
+                .build().toResponseEntity(exception.getStatus());
     }
 
     private ResponseEntity<CommonResponse<T>> toResponseEntity(HttpStatus status) {

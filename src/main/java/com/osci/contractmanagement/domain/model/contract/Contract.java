@@ -30,6 +30,9 @@ public class Contract {
     @Column(name = "file_url", nullable = false)
     private String fileUrl;
 
+    @Column(name = "original_filename")
+    private String originalFilename;
+
     @Column(name = "content_type", nullable = false)
     private String contentType;
 
@@ -61,9 +64,10 @@ public class Contract {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    public static Contract create(String fileUrl, String contentType) {
+    public static Contract create(String fileUrl, String originalFilename, String contentType) {
         return Contract.builder()
                 .fileUrl(fileUrl)
+                .originalFilename(originalFilename)
                 .contentType(contentType)
                 .ocrStatus(OcrStatus.PENDING)
                 .createdAt(LocalDateTime.now())

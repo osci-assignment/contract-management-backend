@@ -39,6 +39,13 @@ public class OllamaContractInfoExtractor implements ContractInfoExtractor {
         this.model = model;
     }
 
+    /**
+     * 업체명 판별 규칙에서 제외해야 할 자사명. LLM이 프롬프트 규칙을 무시하고
+     * '갑'/'을' 중 자사명을 그대로 업체명으로 뽑아버리는 경우가 있어, 코드에서
+     * 한 번 더 검증한다. 이 값이 추출되면 잘못된 결과로 간주하고 재시도를 유도한다.
+     */
+    private static final String OWN_COMPANY_NAME = "오픈소스컨설팅";
+
     @Override
     public ContractExtractionResult extract(String contractText) {
         OllamaGenerateRequest request = OllamaGenerateRequest.of(model, buildPrompt(contractText));
@@ -52,6 +59,9 @@ public class OllamaContractInfoExtractor implements ContractInfoExtractor {
 
             ContractExtractionDto dto = objectMapper.readValue(response.getResponse(), ContractExtractionDto.class);
             log.info("LLM 계약 정보 추출 결과: (업체명: {}, 시작일: {}, 종료일: {})", dto.getCompanyName(), dto.getStartDate(), dto.getEndDate());
+
+            validateNotOwnCompany(dto.getCompanyName());
+
             return new ContractExtractionResult(
                     dto.getCompanyName(),
                     parseDate(dto.getStartDate()),
@@ -59,6 +69,13 @@ public class OllamaContractInfoExtractor implements ContractInfoExtractor {
             );
         } catch (Exception e) {
             throw new IllegalStateException("LLM을 통한 계약 정보 추출에 실패했습니다.", e);
+        }
+    }
+
+    private void validateNotOwnCompany(String companyName) {
+        if (companyName != null && companyName.contains(OWN_COMPANY_NAME)) {
+            throw new IllegalStateException(
+                    "LLM이 상대 업체가 아닌 자사명(" + OWN_COMPANY_NAME + ")을 업체명으로 추출했습니다. 재시도가 필요합니다.");
         }
     }
 

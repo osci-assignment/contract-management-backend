@@ -18,6 +18,13 @@ public class UserFacade implements UserUseCase {
     }
 
     @Override
+    public org.springframework.data.domain.Page<UserResponseDto> getUsers(
+            com.osci.contractmanagement.domain.model.user.UserStatus status,
+            org.springframework.data.domain.Pageable pageable) {
+        return userCommandService.getUsers(status, pageable);
+    }
+
+    @Override
     public UserResponseDto createWorker(CreateUserRequestDto request) {
         return userCommandService.createWorker(request);
     }

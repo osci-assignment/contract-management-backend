@@ -29,6 +29,9 @@ public class KafkaConfig {
         Map<String, Object> props = new HashMap<>(kafkaProperties.buildProducerProperties(null));
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        // 메시지 헤더에 클래스 풀패키지명(__TypeId__)을 싣지 않는다.
+        // 그래야 컨슈머 쪽에서 "어떤 패키지를 신뢰할지" 검증(trusted.packages)할 필요 자체가 없어진다.
+        props.put(JsonSerializer.ADD_TYPE_INFO_HEADERS, false);
         return new DefaultKafkaProducerFactory<>(props);
     }
 
@@ -45,6 +48,8 @@ public class KafkaConfig {
         Map<String, Object> props = new HashMap<>(kafkaProperties.buildConsumerProperties(null));
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, ContractOcrMessage.class.getName());
+        props.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, false);
         return new DefaultKafkaConsumerFactory<>(props);
     }
 

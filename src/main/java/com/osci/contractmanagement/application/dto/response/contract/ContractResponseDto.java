@@ -14,9 +14,10 @@ public class ContractResponseDto {
     Long contractId;
     ContractProjectResponseDto project;
     ContractCompanyResponseDto company;
-    String fileUrl;
+    String fileName;
     String contentType;
     OcrStatus ocrStatus;
+    String failureReason;
 
     public static ContractResponseDto of(Contract contract, Company company, Project project) {
         return ContractResponseDto.builder()
@@ -27,9 +28,10 @@ public class ContractResponseDto {
                 .company(company != null
                         ? new ContractCompanyResponseDto(company.getId(), company.getName())
                         : null)
-                .fileUrl(contract.getFileUrl())
+                .fileName(contract.getOriginalFilename())
                 .contentType(contract.getContentType())
                 .ocrStatus(contract.getOcrStatus())
+                .failureReason(contract.getFailureReason())
                 .build();
     }
 

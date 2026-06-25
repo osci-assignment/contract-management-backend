@@ -21,6 +21,17 @@ public class UserController {
         this.userUseCase = userUseCase;
     }
 
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CommonResponse<org.springframework.data.domain.Page<UserResponseDto>>> getUsers(
+            @org.springframework.web.bind.annotation.RequestParam(required = false)
+            com.osci.contractmanagement.domain.model.user.UserStatus status,
+            @org.springframework.data.web.PageableDefault(size = 10) org.springframework.data.domain.Pageable pageable
+    ) {
+        org.springframework.data.domain.Page<UserResponseDto> response = userUseCase.getUsers(status, pageable);
+        return CommonResponse.ok(response);
+    }
+
     @PostMapping
     public ResponseEntity<CommonResponse<UserResponseDto>> createUser(@RequestBody @Valid CreateUserRequestDto request) {
         UserResponseDto response = userUseCase.createWorker(request);

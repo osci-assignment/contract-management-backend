@@ -22,6 +22,14 @@ public class UserCommandService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional(readOnly = true)
+    public org.springframework.data.domain.Page<UserResponseDto> getUsers(UserStatus status, org.springframework.data.domain.Pageable pageable) {
+        org.springframework.data.domain.Page<User> users = status != null
+                ? userRepository.findByStatusAndDeletedAtIsNull(status, pageable)
+                : userRepository.findByDeletedAtIsNull(pageable);
+        return users.map(UserResponseDto::from);
+    }
+
     @Transactional
     public UserResponseDto createWorker(CreateUserRequestDto request) {
         validateDuplicateEmail(request.getEmail());

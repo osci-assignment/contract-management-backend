@@ -1,5 +1,6 @@
 package com.osci.contractmanagement.domain.repository;
 
+import com.osci.contractmanagement.domain.model.company.OcrStatus;
 import com.osci.contractmanagement.domain.model.contract.Contract;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,4 +14,6 @@ public interface ContractRepository {
     Optional<Contract> findById(Long id);
 
     Page<Contract> findAllByDeletedAtIsNull(Pageable pageable);
+
+    Page<Contract> findAllByOcrStatusAndDeletedAtIsNull(OcrStatus ocrStatus, Pageable pageable);
 }
