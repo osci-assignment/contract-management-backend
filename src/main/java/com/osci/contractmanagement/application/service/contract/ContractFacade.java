@@ -1,6 +1,8 @@
 package com.osci.contractmanagement.application.service.contract;
 
+import com.osci.contractmanagement.application.dto.response.contract.ContractFileData;
 import com.osci.contractmanagement.application.dto.response.contract.ContractResponseDto;
+import com.osci.contractmanagement.application.dto.response.contract.ContractUploadResponseDto;
 import com.osci.contractmanagement.application.provider.ContractInfoExtractor;
 import com.osci.contractmanagement.application.provider.FileStorageProvider;
 import com.osci.contractmanagement.application.provider.TextExtractor;
@@ -16,7 +18,9 @@ import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.retry.support.RetrySynchronizationManager;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -43,7 +47,7 @@ public class ContractFacade implements ContractUseCase {
     public Long uploadContract(byte[] fileBytes, String originalFilename, String contentType) {
         String fileUrl = fileStorageProvider.store(fileBytes, originalFilename);
 
-        Contract contract = contractCommandService.createPending(fileUrl, contentType);
+        Contract contract = contractCommandService.createPending(fileUrl, originalFilename, contentType);
 
         contractEventProducer.publishOcrRequested(contract.getId());
 
@@ -51,8 +55,35 @@ public class ContractFacade implements ContractUseCase {
     }
 
     @Override
-    public Page<ContractResponseDto> getContracts(Pageable pageable) {
-        return contractQueryService.getContracts(pageable);
+    public List<ContractUploadResponseDto> uploadContracts(List<MultipartFile> files) {
+        return files.stream()
+                .map(this::uploadSingleFile)
+                .toList();
+    }
+
+    private ContractUploadResponseDto uploadSingleFile(MultipartFile file) {
+        try {
+            Long contractId = uploadContract(file.getBytes(), file.getOriginalFilename(), file.getContentType());
+            return ContractUploadResponseDto.of(contractId, file.getOriginalFilename());
+        } catch (IOException | RuntimeException e) {
+            log.warn("계약서 업로드 실패 - filename: {}", file.getOriginalFilename(), e);
+            return ContractUploadResponseDto.failed(file.getOriginalFilename());
+        }
+    }
+
+    @Override
+    public Page<ContractResponseDto> getContracts(com.osci.contractmanagement.domain.model.company.OcrStatus ocrStatus, Pageable pageable) {
+        return contractQueryService.getContracts(ocrStatus, pageable);
+    }
+
+    @Override
+    public ContractResponseDto getContract(Long contractId) {
+        return contractQueryService.getContract(contractId);
+    }
+
+    @Override
+    public ContractFileData getContractFile(Long contractId) {
+        return contractQueryService.getContractFile(contractId);
     }
 
     @Override

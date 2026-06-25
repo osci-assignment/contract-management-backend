@@ -30,8 +30,8 @@ public class ContractCommandService {
 
 
     @Transactional
-    public Contract createPending(String fileUrl, String contentType) {
-        return contractRepository.save(Contract.create(fileUrl, contentType));
+    public Contract createPending(String fileUrl, String originalFilename, String contentType) {
+        return contractRepository.save(Contract.create(fileUrl, originalFilename, contentType));
     }
 
     @Transactional
@@ -52,11 +52,16 @@ public class ContractCommandService {
                 result.getStartDate(),
                 result.getEndDate()
         );
-        companyRepository.save(company);
+
+        /*
+           Note: Project 가 비영속 상태이고 동일 Transactional 범위 내에 있기에 project.getId() 가 동작하지 않음
+           Transactional 범위를 분리하여 진행할 수 있지만 JPA 특성상 객체를 영속 상태로 만들기 위해서는 Repository에 의한 조회가 한번 더 일어나야 함(N+1)
+           따라서 우선적으로 성능을 올리기 위해 강제 Flush로 처리
+        */
+        companyRepository.flush();
 
         contract.complete(company.getId(), project.getId(), rawText, result.getCompanyName(),
                 result.getStartDate(), result.getEndDate());
-        // contract는 이 메서드 안에서 조회된 영속 엔티티이므로 dirty checking으로 자동 UPDATE됨
     }
 
     @Transactional

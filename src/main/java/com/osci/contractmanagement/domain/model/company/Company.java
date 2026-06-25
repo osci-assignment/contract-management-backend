@@ -17,6 +17,7 @@ import java.util.Optional;
 @Builder(access = AccessLevel.PRIVATE)
 public class Company {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -46,6 +47,7 @@ public class Company {
                 .contractType(contractType)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
+                .projects(new ArrayList<>())
                 .build();
     }
 
@@ -68,6 +70,12 @@ public class Company {
         Project project = Project.create(this, title, startDate, endDate);
         this.projects.add(project);
         return project;
+    }
+
+    public void updateProject(Long projectId, String title, java.time.LocalDate startDate, java.time.LocalDate endDate) {
+        Project project = findProjectById(projectId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 프로젝트를 찾을 수 없습니다. id=" + projectId));
+        project.update(title, startDate, endDate);
     }
 
     public Optional<Project> findProjectById(Long id) {

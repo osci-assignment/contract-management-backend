@@ -31,9 +31,6 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-      # 기본 1MB -> 10MB로 완화 (계약서 파일이 Base64로 커지는 점 고려, producer/consumer 설정과 일치)
-      KAFKA_MESSAGE_MAX_BYTES: 10485760
-      KAFKA_MAX_PARTITION_FETCH_BYTES: 10485760
 
   # Kafka 토픽/메시지를 웹 UI로 확인하기 위한 용도 (선택, 없어도 동작에는 무방)
   kafka-ui:

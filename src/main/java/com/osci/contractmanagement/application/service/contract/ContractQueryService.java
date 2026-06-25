@@ -1,6 +1,7 @@
 package com.osci.contractmanagement.application.service.contract;
 
 
+import com.osci.contractmanagement.application.dto.response.contract.ContractFileData;
 import com.osci.contractmanagement.application.dto.response.contract.ContractResponseDto;
 import com.osci.contractmanagement.domain.model.company.Company;
 import com.osci.contractmanagement.domain.model.company.Project;
@@ -25,15 +26,48 @@ import java.util.stream.Collectors;
 public class ContractQueryService {
     private final ContractRepository contractRepository;
     private final CompanyRepository companyRepository;
+    private final com.osci.contractmanagement.application.provider.FileStorageProvider fileStorageProvider;
 
-    public ContractQueryService(ContractRepository contractRepository, CompanyRepository companyRepository) {
+    public ContractQueryService(ContractRepository contractRepository, CompanyRepository companyRepository,
+                                com.osci.contractmanagement.application.provider.FileStorageProvider fileStorageProvider) {
         this.contractRepository = contractRepository;
         this.companyRepository = companyRepository;
+        this.fileStorageProvider = fileStorageProvider;
+    }
+
+
+
+    @Transactional(readOnly = true)
+    public ContractFileData getContractFile(Long contractId) {
+        Contract contract = contractRepository.findById(contractId)
+                .orElseThrow(() -> new com.osci.contractmanagement.application.exceptions.BusinessException(
+                        com.osci.contractmanagement.application.exceptions.BusinessExceptionType.CONTRACT_NOT_FOUND));
+
+        byte[] fileBytes = fileStorageProvider.load(contract.getFileUrl());
+        return new ContractFileData(fileBytes, contract.getOriginalFilename(), contract.getContentType());
     }
 
     @Transactional(readOnly = true)
-    public Page<ContractResponseDto> getContracts(Pageable pageable) {
-        Page<Contract> contracts = contractRepository.findAllByDeletedAtIsNull(pageable);
+    public ContractResponseDto getContract(Long contractId) {
+        Contract contract = contractRepository.findById(contractId)
+                .orElseThrow(() -> new com.osci.contractmanagement.application.exceptions.BusinessException(
+                        com.osci.contractmanagement.application.exceptions.BusinessExceptionType.CONTRACT_NOT_FOUND));
+
+        Company company = contract.getCompanyId() != null
+                ? companyRepository.findByIdAndDeletedAtIsNull(contract.getCompanyId()).orElse(null)
+                : null;
+        Project project = (company != null && contract.getProjectId() != null)
+                ? company.findProjectById(contract.getProjectId()).orElse(null)
+                : null;
+
+        return ContractResponseDto.of(contract, company, project);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ContractResponseDto> getContracts(com.osci.contractmanagement.domain.model.company.OcrStatus ocrStatus, Pageable pageable) {
+        Page<Contract> contracts = ocrStatus != null
+                ? contractRepository.findAllByOcrStatusAndDeletedAtIsNull(ocrStatus, pageable)
+                : contractRepository.findAllByDeletedAtIsNull(pageable);
 
         // companyId별로 한 번씩만 조회 - 같은 페이지 안에 같은 업체의 계약서가 여러 건일 수 있음
         Map<Long, Company> companiesById = findDistinctCompanies(contracts.getContent());
