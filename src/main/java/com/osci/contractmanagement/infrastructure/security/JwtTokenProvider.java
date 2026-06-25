@@ -49,6 +49,7 @@ public class JwtTokenProvider implements TokenProvider {
                 .issuer("osci-auth")
                 .claim("userId", userId)
                 .claim("role", "ROLE_" + role.name())
+                .claim("type", type.name())
                 .issuedAt(now)
                 .expiration(expiry)
                 .signWith(key)

@@ -1,6 +1,7 @@
 package com.osci.contractmanagement.presentation;
 
 import com.osci.contractmanagement.application.dto.request.auth.LoginUserRequestDto;
+import com.osci.contractmanagement.application.dto.request.auth.RefreshTokenRequestDto;
 import com.osci.contractmanagement.application.dto.request.user.CreateAdminUserRequestDto;
 import com.osci.contractmanagement.application.dto.request.user.CreateUserRequestDto;
 import com.osci.contractmanagement.application.dto.response.auth.TokenResponseDto;
@@ -47,6 +48,12 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<CommonResponse<TokenResponseDto>> login(@RequestBody @Valid LoginUserRequestDto request) {
         TokenResponseDto response = userUseCase.login(request);
+        return CommonResponse.ok(response);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<CommonResponse<TokenResponseDto>> refresh(@RequestBody @Valid RefreshTokenRequestDto request) {
+        TokenResponseDto response = userUseCase.refresh(request);
         return CommonResponse.ok(response);
     }
 

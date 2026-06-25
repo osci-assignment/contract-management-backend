@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
@@ -34,7 +33,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,
                                 "/api/v1/users",
                                 "/api/v1/users/admin",
-                                "/api/v1/users/login").permitAll()
+                                "/api/v1/users/login",
+                                "/api/v1/users/refresh").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(
