@@ -9,10 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-/**
- * Worker - Project의 배정 관계를 표현하는 독립 엔티티.
- * Project는 Company 애그리거트에 속해 있어 여기서도 ID로만 참조한다.
- */
 @Entity
 @Table(name = "worker_project_assignment",
         uniqueConstraints = @UniqueConstraint(columnNames = {"worker_id", "project_id"}))

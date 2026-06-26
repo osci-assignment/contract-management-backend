@@ -9,11 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-/**
- * Worker는 관리자가 승인된 User(WORKER 역할)에게 부여하는 작업자 프로필이다.
- * User는 ID로만 참조한다 (애그리거트 간 객체 참조를 피해 TransientObjectException 등의
- * 트랜잭션 타이밍 문제를 구조적으로 차단함 - Contract/Company와 동일한 패턴).
- */
 @Entity
 @Table(name = "worker")
 @Getter

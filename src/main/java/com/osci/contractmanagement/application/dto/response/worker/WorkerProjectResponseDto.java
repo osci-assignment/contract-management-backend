@@ -11,10 +11,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * "내가 배정된 프로젝트 목록" 조회 응답.
- * Project가 companyId만 알고 있어, 업체명을 보여주려면 Company를 같이 조회해 넘겨받는다.
- */
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

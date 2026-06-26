@@ -18,10 +18,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/**
- * Contract 처리 과정에서 발생하는 모든 쓰기(영속) 작업을 전담한다.
- * Facade는 흐름만 조율하고, 실제 저장/상태 변경 로직은 여기에 모은다.
- */
 @Service
 public class ContractQueryService {
     private final ContractRepository contractRepository;

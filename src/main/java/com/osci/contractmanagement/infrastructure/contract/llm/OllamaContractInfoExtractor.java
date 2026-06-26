@@ -38,12 +38,6 @@ public class OllamaContractInfoExtractor implements ContractInfoExtractor {
         this.ollamaUrl = ollamaUrl;
         this.model = model;
     }
-
-    /**
-     * 업체명 판별 규칙에서 제외해야 할 자사명. LLM이 프롬프트 규칙을 무시하고
-     * '갑'/'을' 중 자사명을 그대로 업체명으로 뽑아버리는 경우가 있어, 코드에서
-     * 한 번 더 검증한다. 이 값이 추출되면 잘못된 결과로 간주하고 재시도를 유도한다.
-     */
     private static final String OWN_COMPANY_NAME = "오픈소스컨설팅";
 
     @Override

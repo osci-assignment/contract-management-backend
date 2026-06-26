@@ -11,10 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * 테스트/시연 편의를 위해 앱 최초 기동 시 작업자 계정 3명을 미리 만들어둔다.
- * 이미 데이터가 있으면(재기동 시) 아무것도 하지 않는다 (멱등성 보장).
- */
 @Component
 @Slf4j
 public class DataInitializer implements ApplicationRunner {

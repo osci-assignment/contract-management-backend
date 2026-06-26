@@ -34,10 +34,6 @@ public class ContractController {
         this.contractUseCase = contractUseCase;
     }
 
-    /**
-     * 여러 파일을 한 번에 업로드한다. 파일 단위 성공/실패 처리 정책은
-     * ContractUseCase(Facade)가 결정하며, Controller는 호출과 응답 변환만 한다.
-     */
     @Operation(
             summary = "계약서 다중 업로드",
             description = "PDF 또는 이미지(수기 계약서) 파일을 여러 개 한 번에 업로드한다. " +
