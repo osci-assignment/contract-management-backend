@@ -11,6 +11,8 @@ import com.osci.contractmanagement.domain.repository.ContractRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
+
 /**
  * Contract 처리 과정에서 발생하는 모든 쓰기(영속) 작업을 전담한다.
  * Facade는 흐름만 조율하고, 실제 저장/상태 변경 로직은 여기에 모은다.
@@ -48,7 +50,7 @@ public class ContractCommandService {
         Company company = resolveCompany(result.getCompanyName());
 
         Project project = company.registerProject(
-                company.getName() + " 계약 프로젝트",
+                MessageFormat.format("{0} 프로젝트", company.getName()),
                 result.getStartDate(),
                 result.getEndDate()
         );
