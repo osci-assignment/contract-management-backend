@@ -47,9 +47,29 @@ public class ContractFacade implements ContractUseCase {
     public Long uploadContract(byte[] fileBytes, String originalFilename, String contentType) {
         String fileUrl = fileStorageProvider.store(fileBytes, originalFilename);
 
-        Contract contract = contractCommandService.createPending(fileUrl, originalFilename, contentType);
+        Contract contract;
+        try {
+            // createPending()은 별도 트랜잭션으로 즉시 커밋된다. 여기서 실패하면
+            // Contract row 자체가 없는 상태이므로, 방금 저장한 파일은 아무도 참조하지
+            // 않는 고스트 파일이 된다. 즉시 보상 삭제한다.
+            contract = contractCommandService.createPending(fileUrl, originalFilename, contentType);
+        } catch (Exception e) {
+            log.warn("계약서 등록(DB 저장) 실패로 저장된 파일을 삭제합니다 - fileUrl: {}", fileUrl, e);
+            fileStorageProvider.delete(fileUrl);
+            throw e;
+        }
 
-        contractEventProducer.publishOcrRequested(contract.getId());
+        try {
+            contractEventProducer.publishOcrRequested(contract.getId());
+        } catch (Exception e) {
+            // 여기서는 Contract row가 이미 커밋되어 있으므로 파일을 지우면 안 된다
+            // (지우면 살아있는 Contract가 없는 파일을 가리키게 됨). 대신 이 Contract는
+            // 처리 트리거를 못 받아 PENDING 상태로 멈춘다 - 별도 복구(재발행) 수단이 필요하다.
+            // (현재 미구현, README "미완성/개선점" 참고)
+            log.error("Kafka 발행 실패 - contractId: {}가 PENDING 상태로 멈췄습니다. 별도 복구 처리가 필요합니다.",
+                    contract.getId(), e);
+            throw e;
+        }
 
         return contract.getId();
     }
